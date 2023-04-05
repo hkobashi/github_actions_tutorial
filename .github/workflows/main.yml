@@ -5,9 +5,9 @@ on:
   push:
     branches:
       - main
-    paths:
-      - ./**
-      - .github/workflows/main.yml
+    # paths:
+    #   - ../**
+    #   - .github/workflows/main.yml
 
 env:
   REPO_NAME: product-a
