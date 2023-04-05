@@ -45,6 +45,7 @@ jobs:
           ECR_REPOSITORY: ${{ env.AWS_ACCOUNT }}.dkr.ecr.${{ env.ECR_REGION }}.amazonaws.com/${{ env.REPO_NAME }}
         with:
           push: true
+          file: .github/Dockerfile
           tags: |
             ${{ env.ECR_REPOSITORY }}:latest
             ${{ env.ECR_REPOSITORY }}:${{ github.sha }}
