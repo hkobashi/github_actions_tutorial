@@ -49,3 +49,4 @@ jobs:
           tags: |
             ${{ env.ECR_REPOSITORY }}:latest
             ${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+
