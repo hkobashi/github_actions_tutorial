@@ -1,3 +1,6 @@
+resource "aws_s3_bucket" "backend" {
+	bucket = "terraform-bucket-kobashikawa"
+}
 ### reference
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider
 ###
@@ -31,10 +34,10 @@ resource "aws_iam_role" "edited"{
 			},
 			"Action": "sts:AssumeRoleWithWebIdentity",
 			"Condition": {
-				"StringEquals": {
+				"StringLike": {
 					"token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
 					"token.actions.githubusercontent.com:sub": [
-            "repo:hkobashi/github_actions_tutorial"
+            "repo:hkobashi/github_actions_tutorial:*"
           ]
 				}
 			}
