@@ -18,6 +18,8 @@ env:
   AWS_REGION: ap-northeast-1
   AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
   IAM_ROLE_ARN: ${{ secrets.IAM_ROLE_ARN }}
+  TF_PROJECT: test-gha
+  TF_ENVIRONMENT: dev
 
 defaults:
   run:
@@ -49,3 +51,13 @@ jobs:
       - name: Terraform validate
         run: |
           terraform validate -no-color
+      - name: Terraform plan
+        run: |
+          terraform plan \
+            -var 'project=${{ env.TF_PROJECT }}' \
+            -var 'environment=${{ env.TF_ENVIRONMENT}}' \
+            -var 'username=${{ secrets.MYSQL_USERNAME }}' \
+            -var 'password=${{ secrets.MYSQL_PASSWORD}}' \
+            -input=false \
+            -no-color \
+            -detailed-exitcode
