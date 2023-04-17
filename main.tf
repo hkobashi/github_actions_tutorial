@@ -34,7 +34,7 @@ resource "aws_iam_role" "edited"{
 				"StringEquals": {
 					"token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
 					"token.actions.githubusercontent.com:sub": [
-            "repo:hkobashi-organization/check_secrets"
+            "repo:hkobashi/github_actions_tutorial"
           ]
 				}
 			}
