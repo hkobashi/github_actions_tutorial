@@ -9,7 +9,7 @@ resource "aws_iam_instance_profile" "app_ec2_profile" {
   role = aws_iam_role.app_iam_role.name
 }
 
-resource "aws_iam_role" "app_iam_role" {
+resource "aws_iam_role" "new_app_iam_role" {
   name               = "${var.project}-${var.environment}-app-iam-role"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
 
