@@ -16,6 +16,7 @@ resource "aws_iam_openid_connect_provider" "import" {
 ###
 resource "aws_iam_role" "edited"{
   name = "githubactions_role"
+  max_session_duration = 3600
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/AdministratorAccess"
   ]
@@ -40,5 +41,4 @@ resource "aws_iam_role" "edited"{
 		}
 	]
 })
-  max_session_duration = 3600
 }
