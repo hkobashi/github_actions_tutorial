@@ -45,4 +45,4 @@ jobs:
           role-to-assume: ${{ env.IAM_ROLE_ARN }}
       - name: Terraform init
         run: |
-          terraform init
+          terraform init -no-color
