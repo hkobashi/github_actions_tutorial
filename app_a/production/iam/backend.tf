@@ -10,9 +10,9 @@ terraform {
     }
   }
   backend "s3" {
-    bucket  = "terraform-bucket-kobashikawa"
-    key     = "iam/terraform.tfstate"
-    region  = "ap-northeast-1"
+    bucket = "terraform-bucket-kobashikawa"
+    key    = "iam/terraform.tfstate"
+    region = "ap-northeast-1"
   }
 }
 
