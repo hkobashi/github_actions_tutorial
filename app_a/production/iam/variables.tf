@@ -22,3 +22,9 @@ variable "password" {
   default   = "password"
   sensitive = true
 }
+
+variable "test" {
+  type      = string
+  default   = "password"
+  sensitive = true
+}
