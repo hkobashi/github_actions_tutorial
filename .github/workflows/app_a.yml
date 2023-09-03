@@ -16,7 +16,8 @@ permissions:
 
 jobs:
   tf_plan_iam:
-    if: github.event_name == 'push' && contains(github.event.head_commit.modified, 'app_a/production/iam')
+    # iam配下が更新された場合のみ実行
+    if: contains(github.event.head_commit.modified, 'app_a/production/iam')
     uses: ./.github/workflows/_tf_plan.yml
     with:
       workspace: 'app_a/production/iam'
@@ -27,6 +28,7 @@ jobs:
 
   tf_plan_vpc:
     # vpc配下が更新された場合のみ実行
+    if: contains(github.event.head_commit.modified, 'app_a/production/vpc')
     uses: ./.github/workflows/_tf_plan.yml
     with:
       workspace: 'app_a/production/vpc'
