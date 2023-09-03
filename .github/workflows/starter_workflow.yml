@@ -1,7 +1,9 @@
 name: Starter workflow for reusable workflow
 
 on:
-  workflow_dispatch:
+  # workflow_dispatch:
+  push:
+
 
 jobs:
   call_reusable_workflow:
