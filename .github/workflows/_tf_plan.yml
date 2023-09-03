@@ -21,9 +21,6 @@ on:
         description: IAM role ARN
         required: true
 
-permissions:
-  id-token: write
-  contents: read
 
 # env:
 #   AWS_REGION: ap-northeast-1
