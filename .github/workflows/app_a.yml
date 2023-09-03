@@ -7,6 +7,9 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   call_reusable_workflow:
