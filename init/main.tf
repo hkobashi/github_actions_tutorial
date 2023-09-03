@@ -1,9 +1,10 @@
 # get current aws account id
 data "aws_caller_identity" "current" {}
 
-resource "aws_s3_bucket" "backend" {
-	bucket = "terraform-bucket-kobashikawa"
-}
+# resource "aws_s3_bucket" "backend" {
+# 	bucket = "terraform-bucket-kobashikawa"
+# }
+
 ### reference
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider
 ###
