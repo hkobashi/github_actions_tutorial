@@ -21,11 +21,6 @@ on:
         description: IAM role ARN
         required: true
 
-
-# env:
-#   AWS_REGION: ap-northeast-1
-
-
 jobs:
   preview:
     name: Preview

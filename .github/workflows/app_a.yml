@@ -3,6 +3,9 @@ name: app_a' production
 on:
   workflow_dispatch:
   push:
+    paths:
+      - 'app_a/production/**'
+      - '.github/workflows/**'
   pull_request:
     branches:
       - main
@@ -12,10 +15,21 @@ permissions:
   contents: read
 
 jobs:
-  call_reusable_workflow:
+  tf_plan_iam:
+    if: github.event_name == 'push' && contains(github.event.head_commit.modified, 'app_a/production/iam')
     uses: ./.github/workflows/_tf_plan.yml
     with:
-      workspace: 'app_a/production'
+      workspace: 'app_a/production/iam'
+      aws_region: 'ap-northeast-1'
+    secrets:
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      IAM_ROLE_ARN: ${{ secrets.IAM_ROLE_ARN }}
+
+  tf_plan_vpc:
+    # vpc配下が更新された場合のみ実行
+    uses: ./.github/workflows/_tf_plan.yml
+    with:
+      workspace: 'app_a/production/vpc'
       aws_region: 'ap-northeast-1'
     secrets:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
