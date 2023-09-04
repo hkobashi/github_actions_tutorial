@@ -1,0 +1,95 @@
+name: "infra preview & deploy"
+
+on:
+  workflow_call:
+    # caller workflowに渡す環境変数を定義
+    inputs:
+      workspace:
+        description: workspace name(e.g. coorum/production/infra)
+        required: true
+        type: string
+      aws_region:
+        description: AWS region name(e.g. ap-northeast-1)
+        required: true
+        type: string
+        default: 'ap-northeast-1'
+    secrets:
+      AWS_ACCOUNT_ID:
+        description: AWS account ID
+        required: true
+      IAM_ROLE_ARN:
+        description: IAM role ARN
+        required: true
+
+jobs:
+  preview:
+    name: Preview
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.workspace }}
+    runs-on: ubuntu-latest
+    outputs:
+      TF_PLAN_EXITCODE: ${{ steps.terraform_plan.outputs.exitcode }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v2
+      - name: Terraform format
+        run: |
+          terraform fmt -check
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-region: ${{ inputs.aws_region }}
+          role-to-assume: ${{ secrets.IAM_ROLE_ARN }}
+      - name: Terraform init
+        run: |
+          terraform init -no-color
+      - name: Terraform validate
+        run: |
+          terraform validate -no-color
+      - name: Terraform plan
+        id: terraform_plan
+        continue-on-error: true
+        run: |
+          terraform plan \
+            -var 'username=${{ secrets.MYSQL_USERNAME }}' \
+            -var 'password=${{ secrets.MYSQL_PASSWORD}}' \
+            -input=false \
+            -no-color \
+            -detailed-exitcode
+  # deploy:
+  #   name: "Deploy"
+  #   needs: preview
+  #   if: needs.preview.outputs.TF_PLAN_EXITCODE == 2
+  #   environment: production
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+  #     - name: Setup terraform
+  #       uses: hashicorp/setup-terraform@v2
+  #       with:
+  #         terraform_version: ${{ env.TF_VERSION }}
+  #     - name: Terraform format
+  #       run: |
+  #         terraform fmt -check
+  #     - name: Configure AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@v2
+  #       with:
+  #         aws-region: ${{ env.AWS_REGION }}
+  #         role-to-assume: ${{ env.IAM_ROLE_ARN }}
+  #     - name: Terraform init
+  #       run: |
+  #         terraform init -no-color
+  #     - name: Terraform apply
+  #       id: terraform_apply
+  #       run: |
+  #         terraform apply \
+  #           -var 'username=${{ secrets.MYSQL_USERNAME }}' \
+  #           -var 'password=${{ secrets.MYSQL_PASSWORD}}' \
+  #           -input=false \
+  #           -no-color \
+  #           -auto-approve
